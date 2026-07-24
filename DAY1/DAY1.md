@@ -205,4 +205,4 @@ Software Architecture is the high-level blueprint of a software system that defi
 - Focuses on structure, not technologies.
 - Created during the Design Phase.
 - Guides implementation.
-- Good architecture enables scalable and maintainable systems.
+- Good architecture enables scalable and maintainable systems.,
