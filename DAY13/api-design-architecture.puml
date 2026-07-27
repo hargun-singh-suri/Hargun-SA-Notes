@@ -1,0 +1,58 @@
+@startuml API_Design_Architecture
+
+title API Design — Categories + Best Practices
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 13
+skinparam roundcorner 10
+skinparam shadowing false
+
+skinparam rectangle {
+    BorderColor #333333
+    FontColor #222222
+}
+skinparam package {
+    BorderColor #555555
+    FontColor #222222
+}
+
+rectangle "API\n(Contract between system\nand client applications)" as API #F4F6F7
+
+package "3 Categories" as Categories #FDFEFE {
+    rectangle "Public API\nOpen to all developers\n(requires registration)" as Public #AED6F1
+    rectangle "Private/Internal API\nOnly within company" as Private #A9DFBF
+    rectangle "Partner API\nOnly for business\nrelationship clients" as Partner #F9E79F
+}
+
+API -down-> Categories
+
+package "Best Practices for Good API Design" as Practices #F4F6F7 {
+
+    rectangle "1. Encapsulation\nHide internal implementation" as P1 #D2B4DE
+
+    rectangle "2. Easy to Use\nOne clear way, descriptive\nnames, consistency" as P2 #D2B4DE
+
+    rectangle "3. Idempotency\nSame result no matter\nhow many retries" as P3 #D2B4DE
+
+    rectangle "4. Pagination\nSmall segments via\nsize + offset" as P4 #D2B4DE
+
+    rectangle "5. Asynchronous API\nImmediate response +\ntrack via ID (long tasks)" as P5 #D2B4DE
+
+    rectangle "6. Versioning\nMaintain old + new version\nduring transition" as P6 #D2B4DE
+}
+
+Categories -down-> Practices
+
+note right of P3
+  Ex: Update address = idempotent
+  Ex: Add $100 to balance = NOT idempotent
+  Needed because network calls
+  can fail/lose messages silently
+end note
+
+note right of P5
+  Ex: Big reports, video compression,
+  large data analysis
+end note
+
+@enduml
