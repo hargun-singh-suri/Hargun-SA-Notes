@@ -1,0 +1,40 @@
+@startuml RPC_Sequence_Flow
+
+title RPC (Remote Procedure Call) - How It Works
+
+skinparam backgroundColor #FFFFFF
+skinparam sequenceMessageAlign center
+skinparam shadowing false
+skinparam defaultFontSize 13
+
+actor "Client App\n(Caller)" as Client
+participant "Client Stub\n(auto-generated)" as ClientStub
+participant "Network" as Network
+participant "Server Stub\n(auto-generated)" as ServerStub
+participant "Server App\n(Real Method)" as Server
+
+Client -> ClientStub : Call method(params)\n(looks like local call)
+ClientStub -> ClientStub : Serialize / Marshal data
+ClientStub -> Network : Send encoded request
+
+Network -> ServerStub : Deliver request
+ServerStub -> ServerStub : Deserialize data
+ServerStub -> Server : Invoke real method
+
+Server -> Server : Process request
+Server --> ServerStub : Return result
+
+ServerStub -> ServerStub : Serialize response
+ServerStub --> Network : Send encoded response
+
+Network --> ClientStub : Deliver response
+ClientStub -> ClientStub : Deserialize response
+ClientStub --> Client : Return value\n(looks like local return)
+
+note over Client, Server
+  Defined once via Interface Description
+  Language (IDL) -> generates both stubs.
+  Client and Server remain fully decoupled.
+end note
+
+@enduml
