@@ -1,0 +1,62 @@
+@startuml REST_API_Architecture
+
+title REST API — Resource Hierarchy + Design Process
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 13
+skinparam roundcorner 10
+skinparam shadowing false
+
+skinparam rectangle {
+    BorderColor #333333
+    FontColor #222222
+}
+skinparam package {
+    BorderColor #555555
+    FontColor #222222
+}
+
+package "Resource Hierarchy (Movie Streaming Example)" as Hierarchy #FDFEFE {
+
+    rectangle "/movies\n(Collection Resource)" as Movies #AED6F1
+
+    rectangle "/movies/{id}\n(Simple Resource)" as Movie #A9DFBF
+
+    rectangle "/movies/{id}/directors\n(Collection)" as Directors #F9E79F
+    rectangle "/movies/{id}/actors\n(Collection)" as Actors #F9E79F
+
+    rectangle "/movies/{id}/actors/{id}\n(Simple Resource)" as Actor #D2B4DE
+
+    rectangle "profile_picture\ncontact_info\n(Sub-resources)" as ActorSub #F5B7B1
+
+    Movies -down-> Movie : contains
+    Movie -down-> Directors
+    Movie -down-> Actors
+    Actors -down-> Actor : contains
+    Actor -down-> ActorSub
+}
+
+note right of Movies
+  Naming rules:
+  - Nouns only
+  - Plural = collection
+  - Singular = simple resource
+end note
+
+package "CRUD -> HTTP Mapping" as HTTP #F4F6F7 {
+    rectangle "Create -> POST" as C1 #AED6F1
+    rectangle "Read -> GET (safe, cacheable)" as C2 #AED6F1
+    rectangle "Update -> PUT (idempotent)" as C3 #AED6F1
+    rectangle "Delete -> DELETE (idempotent)" as C4 #AED6F1
+}
+
+Hierarchy -down-> HTTP
+
+package "2 Requirements for Scalability + Availability" as Reqs #F4F6F7 {
+    rectangle "Statelessness\n(no session on server)" as R1 #F9E79F
+    rectangle "Cacheability\n(response marked cacheable\nor not)" as R2 #F9E79F
+}
+
+HTTP -down-> Reqs
+
+@enduml
