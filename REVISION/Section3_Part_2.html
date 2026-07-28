@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Section 3 Revision - Part 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
+  :root{
+    --ink:#0F2A43; --slate:#3B6E8F; --paper:#F6F8FA; --teal:#1C8C7C; --amber:#D98A2B; --card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--paper),var(--paper)),
+      repeating-linear-gradient(0deg, rgba(59,110,143,0.05) 0 1px, transparent 1px 28px),
+      repeating-linear-gradient(90deg, rgba(59,110,143,0.05) 0 1px, transparent 1px 28px);
+    font-family:'Inter',sans-serif; color:var(--ink); padding:28px;
+  }
+  .sheet{max-width:1080px; margin:0 auto; background:var(--card); border:1.5px solid var(--ink); position:relative;}
+  .tick{position:absolute; width:14px; height:14px; border:2px solid var(--amber);}
+  .tick.tl{top:-2px;left:-2px;border-right:none;border-bottom:none;}
+  .tick.tr{top:-2px;right:-2px;border-left:none;border-bottom:none;}
+  .tick.bl{bottom:-2px;left:-2px;border-right:none;border-top:none;}
+  .tick.br{bottom:-2px;right:-2px;border-left:none;border-top:none;}
+
+  header{background:var(--ink); color:#fff; padding:22px 32px 18px;}
+  header .eyebrow{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:var(--amber); text-transform:uppercase; margin-bottom:6px;}
+  header h1{font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin:0 0 4px; letter-spacing:-0.01em;}
+  header p{margin:0; font-size:12px; color:#B9CBD8;}
+  .callout{background:#FFF7EA; border:1px solid var(--amber); border-radius:5px; padding:9px 14px; font-size:11.5px; color:#7A5216; margin:18px 32px 0;}
+  .callout strong{color:#0F2A43;}
+
+  .body-pad{padding:20px 32px 26px;}
+
+  .section{margin-bottom:26px;}
+  .section:last-of-type{margin-bottom:8px;}
+  .section-head{display:flex; align-items:baseline; gap:10px; border-bottom:1.5px solid var(--slate); padding-bottom:6px; margin-bottom:10px;}
+  .section-tag{font-family:'JetBrains Mono',monospace; font-size:11px; color:#fff; background:var(--slate); padding:2px 7px; border-radius:3px;}
+  .section-head h2{font-family:'Space Grotesk',sans-serif; font-size:16px; margin:0; color:var(--ink);}
+  .section-notes{list-style:none; margin:0 0 14px; padding:0;}
+  .section-notes li{font-size:12.5px; line-height:1.6; color:#33475A; padding-left:14px; position:relative; margin-bottom:4px;}
+  .section-notes li::before{content:"—"; position:absolute; left:0; color:var(--teal); font-weight:600;}
+
+  /* URL anatomy */
+  .url-box{
+    display:flex; justify-content:center; align-items:center; gap:2px; flex-wrap:wrap;
+    font-family:'JetBrains Mono',monospace; font-size:13px; padding:14px; background:var(--ink); border-radius:6px; margin:10px 0 16px;
+  }
+  .url-box span{padding:4px 6px; border-radius:3px;}
+  .url-verb{background:var(--amber); color:#1C1206; font-weight:700;}
+  .url-path{color:#EAF2F5;}
+  .url-id{background:var(--teal); color:#fff; font-weight:700; border-radius:3px;}
+
+  table.verbs{width:100%; border-collapse:collapse; margin-bottom:16px; font-size:11.5px;}
+  table.verbs th{background:var(--slate); color:#fff; font-family:'Space Grotesk',sans-serif; font-weight:600; text-align:left; padding:6px 10px;}
+  table.verbs td{padding:6px 10px; border-bottom:1px solid #E1E9EE; color:#33475A;}
+  table.verbs tr:nth-child(even) td{background:#F7FAFB;}
+  table.verbs code{background:#EAF2F5; padding:1px 5px; border-radius:3px; color:var(--ink); font-weight:600;}
+
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:6px;}
+  .compare-box{border:1.3px solid var(--slate); border-radius:6px; overflow:hidden;}
+  .compare-box .head{background:var(--slate); color:#fff; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12.5px; padding:7px 12px;}
+  .compare-box.alt .head{background:var(--ink);}
+  .compare-box ul{margin:0; padding:10px 12px 10px 24px; background:#fff;}
+  .compare-box li{font-size:11.5px; color:#33475A; margin-bottom:4px; line-height:1.5;}
+
+  .cards{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  .card{border-left:3px solid var(--slate); padding:6px 0 6px 14px;}
+  .card h3{font-family:'Space Grotesk',sans-serif; font-size:13.5px; margin:0 0 6px; color:var(--ink);}
+  .card ul{margin:0; padding-left:15px;}
+  .card li{font-size:12px; line-height:1.55; color:#33475A; margin-bottom:3px;}
+
+  footer{text-align:center; font-family:'JetBrains Mono',monospace; font-size:9.5px; color:#7C93A3; padding:12px 20px 20px;}
+
+  @media (max-width:760px){ .compare, .cards{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="tick tl"></div><div class="tick tr"></div>
+  <div class="tick bl"></div><div class="tick br"></div>
+
+  <header>
+    <div class="eyebrow">Revision Sheet · Section 3 — Part 2 of 2</div>
+    <h1>REST API &amp; Concepts That Connect Part 1</h1>
+    <p>Software Architecture &amp; Design of Large-Scale Systems — Michael Pogrebinsky</p>
+  </header>
+
+  <div class="callout">
+    <strong>Note:</strong> the REST API page in the source was diagram-only — no book text to pull from. Everything below is standard, widely-taught knowledge added to close that gap.
+  </div>
+
+  <div class="body-pad">
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-tag">15</span>
+        <h2>REST API — the Basics</h2>
+      </div>
+      <ul class="section-notes">
+        <li>REST treats everything in your system as a "resource" (a user, an order, a comment) with its own address (URL)</li>
+        <li>You act on that resource using standard HTTP verbs — no custom function names needed</li>
+      </ul>
+
+      <div class="url-box">
+        <span class="url-verb">GET</span><span class="url-path">/users/</span><span class="url-id">123</span><span class="url-path">/orders</span>
+      </div>
+
+      <table class="verbs">
+        <tr><th>HTTP Verb</th><th>Meaning</th><th>Example</th></tr>
+        <tr><td><code>GET</code></td><td>Read a resource</td><td>Fetch a user's profile</td></tr>
+        <tr><td><code>POST</code></td><td>Create a new resource</td><td>Place a new order</td></tr>
+        <tr><td><code>PUT</code></td><td>Replace a resource entirely (idempotent)</td><td>Overwrite a user's full profile</td></tr>
+        <tr><td><code>PATCH</code></td><td>Update part of a resource</td><td>Change just the user's email</td></tr>
+        <tr><td><code>DELETE</code></td><td>Remove a resource</td><td>Cancel an order</td></tr>
+      </table>
+
+      <ul class="section-notes">
+        <li><strong>Stateless:</strong> every request carries everything needed to handle it — the server doesn't remember you between requests</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-tag">+</span>
+        <h2>RPC vs REST — Which Feels Like What</h2>
+      </div>
+      <div class="compare">
+        <div class="compare-box">
+          <div class="head">RPC — action-based</div>
+          <ul>
+            <li>Feels like calling a function: <code>createOrder()</code>, <code>cancelOrder()</code></li>
+            <li>Natural fit for internal, service-to-service calls</li>
+            <li>Tighter coupling between client and server code</li>
+          </ul>
+        </div>
+        <div class="compare-box alt">
+          <div class="head">REST — resource-based</div>
+          <ul>
+            <li>Feels like addressing a thing: <code>POST /orders</code>, <code>DELETE /orders/9</code></li>
+            <li>Natural fit for public APIs used by many different clients</li>
+            <li>Looser coupling — same verbs work on any resource</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-tag">+</span>
+        <h2>Two Ideas From Part 1, Made Concrete</h2>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h3>Idempotency, worked example</h3>
+          <ul>
+            <li><code>POST /payments</code> called twice by accident = charged twice ❌ (not idempotent)</li>
+            <li><code>PUT /payments/txn-88</code> called twice = same single payment ✅ (idempotent, safe to retry)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>API Versioning, two common ways</h3>
+          <ul>
+            <li><strong>URI versioning:</strong> <code>/v1/orders</code> → <code>/v2/orders</code> — simple, visible in the URL</li>
+            <li><strong>Header versioning:</strong> same URL, version sent in a request header — cleaner URLs, less obvious to clients</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>SUPPLEMENTARY NOTES — SOFTWARE ARCHITECTURE &amp; DESIGN OF LARGE SCALE SYSTEMS — TOP DEVELOPER ACADEMY</footer>
+</div>
+
+</body>
+</html>
