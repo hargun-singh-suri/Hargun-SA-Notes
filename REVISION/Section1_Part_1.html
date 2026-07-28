@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Section 1 Revision Sheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
+
+  :root{
+    --ink:#0F2A43;
+    --slate:#3B6E8F;
+    --paper:#F6F8FA;
+    --line:#C9D6DE;
+    --teal:#1C8C7C;
+    --amber:#D98A2B;
+    --card:#FFFFFF;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--paper),var(--paper)),
+      repeating-linear-gradient(0deg, rgba(59,110,143,0.05) 0 1px, transparent 1px 28px),
+      repeating-linear-gradient(90deg, rgba(59,110,143,0.05) 0 1px, transparent 1px 28px);
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    padding:28px;
+  }
+
+  .sheet{
+    max-width:1100px;
+    margin:0 auto;
+    background:var(--card);
+    border:1.5px solid var(--ink);
+    position:relative;
+    box-shadow:0 1px 0 rgba(15,42,67,0.05);
+  }
+
+  /* blueprint corner ticks */
+  .tick{position:absolute; width:14px; height:14px; border:2px solid var(--amber);}
+  .tick.tl{top:-2px;left:-2px;border-right:none;border-bottom:none;}
+  .tick.tr{top:-2px;right:-2px;border-left:none;border-bottom:none;}
+  .tick.bl{bottom:-2px;left:-2px;border-right:none;border-top:none;}
+  .tick.br{bottom:-2px;right:-2px;border-left:none;border-top:none;}
+
+  header{
+    background:var(--ink);
+    color:#fff;
+    padding:22px 32px 18px;
+  }
+  header .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    color:var(--amber);
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  header h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:24px;
+    font-weight:700;
+    margin:0 0 4px;
+    letter-spacing:-0.01em;
+  }
+  header p{
+    margin:0;
+    font-size:12.5px;
+    color:#B9CBD8;
+  }
+
+  .body-pad{padding:24px 32px 30px;}
+
+  .intro-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+    margin-bottom:26px;
+  }
+  .intro-card{
+    border-left:3px solid var(--slate);
+    padding:4px 0 4px 14px;
+  }
+  .intro-card h3{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:13.5px;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  .intro-card p, .intro-card li{
+    font-size:12.5px;
+    line-height:1.55;
+    color:#33475A;
+    margin:0;
+  }
+  .intro-card ol{margin:0; padding-left:16px;}
+  .intro-card li{margin-bottom:2px;}
+
+  .section{margin-bottom:28px;}
+  .section:last-of-type{margin-bottom:8px;}
+
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    border-bottom:1.5px solid var(--slate);
+    padding-bottom:6px;
+    margin-bottom:10px;
+  }
+  .section-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:#fff;
+    background:var(--slate);
+    padding:2px 7px;
+    border-radius:3px;
+  }
+  .section-head h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:16px;
+    margin:0;
+    color:var(--ink);
+  }
+
+  .section-notes{
+    list-style:none;
+    margin:0 0 16px;
+    padding:0;
+  }
+  .section-notes li{
+    font-size:12.5px;
+    line-height:1.6;
+    color:#33475A;
+    padding-left:14px;
+    position:relative;
+    margin-bottom:3px;
+  }
+  .section-notes li::before{
+    content:"—";
+    position:absolute;
+    left:0;
+    color:var(--teal);
+    font-weight:600;
+  }
+
+  /* ---------- Tree diagram ---------- */
+  .tree{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-top:6px;
+  }
+  .tree-root{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    font-size:12.5px;
+    background:var(--ink);
+    color:#fff;
+    padding:8px 18px;
+    border-radius:5px;
+    white-space:nowrap;
+  }
+  .branch-line{
+    width:1.5px;
+    height:16px;
+    background:var(--slate);
+  }
+  .tree-children{
+    display:flex;
+    gap:16px;
+  }
+  .tree-child{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position:relative;
+    padding-top:16px;
+  }
+  .tree-child::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:50%;
+    width:0;
+    height:16px;
+    border-left:1.5px solid var(--slate);
+  }
+  .tree-child::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:1.5px;
+    background:var(--slate);
+  }
+  .tree-child:first-child::after{ left:50%; width:50%; }
+  .tree-child:last-child::after{ width:50%; }
+  .tree-children.single .tree-child::after{ display:none; }
+  .node{
+    font-size:11px;
+    font-weight:600;
+    text-align:center;
+    background:#EAF2F5;
+    border:1.3px solid var(--slate);
+    border-radius:5px;
+    padding:7px 10px;
+    color:var(--ink);
+    line-height:1.3;
+    min-width:128px;
+    max-width:150px;
+  }
+  .node .sub{
+    display:block;
+    font-weight:500;
+    font-size:9px;
+    color:#5A7386;
+    margin-top:2px;
+  }
+  .node.leaf{
+    background:#fff;
+    min-width:100px;
+    max-width:130px;
+    font-size:10.5px;
+    padding:6px 9px;
+  }
+
+  .two-trees{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+  }
+  @media (max-width:760px){
+    .intro-grid, .two-trees{grid-template-columns:1fr;}
+  }
+
+  footer{
+    text-align:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:9.5px;
+    color:#7C93A3;
+    padding:12px 20px 20px;
+    letter-spacing:0.02em;
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="tick tl"></div><div class="tick tr"></div>
+  <div class="tick bl"></div><div class="tick br"></div>
+
+  <header>
+    <div class="eyebrow">Revision Sheet · Section 1 of 9</div>
+    <h1>System Requirements &amp; Architectural Drivers</h1>
+    <p>Software Architecture &amp; Design of Large-Scale Systems — Michael Pogrebinsky</p>
+  </header>
+
+  <div class="body-pad">
+
+    <div class="intro-grid">
+      <div class="intro-card">
+        <h3>1 · System Design &amp; Architectural Drivers</h3>
+        <p>Architectural drivers are the few things that most influence how you build a system — mainly business goals, required quality attributes, and constraints. <strong>Example:</strong> if the business goal is "support 10 million users," that single driver pushes you toward a horizontally-scalable design from day one.</p>
+      </div>
+      <div class="intro-card">
+        <h3>2 · Feature Requirements — Step-by-Step</h3>
+        <ol>
+          <li>Gather feature requirements from stakeholders</li>
+          <li>Identify the quality attributes needed</li>
+          <li>Note down constraints</li>
+          <li>Turn all of it into an architecture</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="two-trees">
+
+      <div class="section">
+        <div class="section-head">
+          <span class="section-tag">03</span>
+          <h2>Quality Attributes Requirements</h2>
+        </div>
+        <ul class="section-notes">
+          <li>A quality attribute is a measurable property of the system — like "how fast" or "how often it stays up" — not a feature</li>
+          <li>The architecture you pick directly controls how good each quality attribute can be</li>
+        </ul>
+
+        <div class="tree">
+          <div class="tree-root">Quality Attribute Checks</div>
+          <div class="branch-line"></div>
+          <div class="tree-children">
+            <div class="tree-child">
+              <div class="node">Testability<span class="sub">must be provable, not just claimed</span></div>
+            </div>
+            <div class="tree-child">
+              <div class="node">Trade-Offs<span class="sub">e.g. more security = slower speed</span></div>
+            </div>
+            <div class="tree-child">
+              <div class="node">Feasibility<span class="sub">can budget &amp; timeline actually deliver it?</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <span class="section-tag">04</span>
+          <h2>System Constraints</h2>
+        </div>
+        <ul class="section-notes">
+          <li>A constraint is a decision already made for you before design starts — you must design around it, not fight it</li>
+          <li>Keep the architecture loosely coupled so that if a constraint changes later, you don't have to rebuild everything</li>
+        </ul>
+
+        <div class="tree">
+          <div class="tree-root">System Constraints</div>
+          <div class="branch-line"></div>
+          <div class="tree-children">
+            <div class="tree-child">
+              <div class="node">Technical<span class="sub">e.g. must reuse an existing database</span></div>
+            </div>
+            <div class="tree-child">
+              <div class="node">Business<span class="sub">e.g. fixed budget or deadline</span></div>
+            </div>
+            <div class="tree-child">
+              <div class="node">Regulatory<span class="sub">/ Legal</span></div>
+              <div class="branch-line" style="height:14px;"></div>
+              <div class="tree-children" style="gap:10px;">
+                <div class="tree-child">
+                  <div class="node leaf">Global<span class="sub">e.g. GDPR</span></div>
+                </div>
+                <div class="tree-child">
+                  <div class="node leaf">Region-Specific<span class="sub">e.g. local data storage law</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>PREPARED FROM: SOFTWARE ARCHITECTURE &amp; DESIGN OF LARGE SCALE SYSTEMS — TOP DEVELOPER ACADEMY</footer>
+</div>
+
+</body>
+</html>
