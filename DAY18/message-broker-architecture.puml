@@ -1,0 +1,49 @@
+@startuml Message_Broker_Architecture
+
+title Message Broker — Async Flow + Pub/Sub Pattern
+
+skinparam backgroundColor #FFFFFF
+skinparam sequenceMessageAlign center
+skinparam shadowing false
+skinparam defaultFontSize 13
+
+actor User
+participant "Front-End\nService" as FE
+queue "Message Broker\n(Orders Channel)" as MB
+participant "Fulfillment\nService" as Fulfill
+participant "Analytics\nService" as Analytics
+participant "Push Notification\nService" as Push
+participant "Review/Survey\nService" as Review
+
+User -> FE : Place order
+FE -> MB : Publish "OrderPlaced" event
+FE --> User : Immediate acknowledgment\n(no waiting)
+
+MB -> Fulfill : Deliver message (subscribed)
+Fulfill -> Fulfill : Reserve ticket, charge card
+Fulfill --> User : Async confirmation email\n(sent later)
+
+MB -> Analytics : Deliver message (subscribed)
+Analytics -> Analytics : Analyze purchase pattern
+
+MB -> Push : Deliver message (subscribed)
+Push --> User : Push notification
+
+MB -> Review : Deliver message (subscribed)
+Review -> Review : Schedule review request
+
+note over MB
+  All 3 extra services (Analytics,
+  Push, Review) added later via
+  Pub/Sub - ZERO changes needed
+  to existing Front-End/Fulfillment code
+end note
+
+note over FE, Fulfill
+  Traffic spike handling:
+  Front-End just decrements stock
+  counter; MB queues real orders
+  to be processed one by one
+end note
+
+@enduml
