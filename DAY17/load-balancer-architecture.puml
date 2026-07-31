@@ -1,0 +1,64 @@
+@startuml Load_Balancer_Architecture
+
+title Load Balancer — Quality Attributes + 4 Types
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 13
+skinparam roundcorner 10
+skinparam shadowing false
+
+skinparam rectangle {
+    BorderColor #333333
+    FontColor #222222
+}
+skinparam package {
+    BorderColor #555555
+    FontColor #222222
+}
+
+rectangle "Load Balancer\n(Distributes traffic + abstracts\nserver group as one unit)" as LB #F4F6F7
+
+package "Quality Attributes Provided" as QA #FDFEFE {
+    rectangle "Scalability\n(add/remove servers,\nauto-scaling)" as Q1 #AED6F1
+    rectangle "Availability\n(skip unhealthy servers)" as Q2 #AED6F1
+    rectangle "Performance\n(higher throughput,\nslight latency cost)" as Q3 #AED6F1
+    rectangle "Maintainability\n(rolling releases,\nno disruption)" as Q4 #AED6F1
+}
+
+LB -down-> QA
+
+package "4 Types of Load Balancing" as Types #F4F6F7 {
+
+    rectangle "1. DNS Load Balancing\n\nMaps domain -> IP list\nRound-robin rotation" as T1 #F5B7B1
+
+    rectangle "2. Hardware LB\n\nDedicated physical device" as T2 #A9DFBF
+
+    rectangle "3. Software LB\n\nProgram on general\npurpose computer" as T3 #A9DFBF
+
+    rectangle "4. GSLB\n(Global Server LB)\n\nDNS + intelligent routing\nacross data centers" as T4 #F9E79F
+}
+
+QA -down-> Types
+
+note bottom of T1
+  Drawbacks: no health check,
+  simple round-robin only,
+  exposes server IPs (less secure)
+end note
+
+note bottom of T2
+  Same benefits as Software LB:
+  - Hides server IPs (secure)
+  - Active health checks
+  - Smart, weighted routing
+  - Must be collocated with servers
+end note
+
+note bottom of T4
+  Routes by: location, current
+  data center load, or best
+  response time. Enables disaster
+  recovery across regions.
+end note
+
+@enduml
