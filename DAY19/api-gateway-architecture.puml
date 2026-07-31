@@ -1,0 +1,63 @@
+@startuml API_Gateway_Architecture
+
+title API Gateway — Before vs After + Benefits
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 13
+skinparam roundcorner 10
+skinparam shadowing false
+
+skinparam rectangle {
+    BorderColor #333333
+    FontColor #222222
+}
+skinparam package {
+    BorderColor #555555
+    FontColor #222222
+}
+
+package "BEFORE: No API Gateway" as Before #FDFEFE {
+    actor "Client" as C1
+    rectangle "Frontend Service\n(own auth)" as F1 #F5B7B1
+    rectangle "Video Service\n(own auth)" as V1 #F5B7B1
+    rectangle "Comments Service\n(own auth)" as CM1 #F5B7B1
+
+    C1 -down-> F1 : Call 1
+    C1 -down-> V1 : Call 2
+    C1 -down-> CM1 : Call 3
+}
+
+package "AFTER: With API Gateway" as After #FDFEFE {
+    actor "Client" as C2
+    rectangle "API Gateway\n(auth, routing,\ncaching, monitoring)" as GW #AED6F1
+    rectangle "Frontend Service" as F2 #A9DFBF
+    rectangle "Video Service" as V2 #A9DFBF
+    rectangle "Comments Service" as CM2 #A9DFBF
+
+    C2 -down-> GW : Single call
+    GW -down-> F2
+    GW -down-> V2
+    GW -down-> CM2
+}
+
+Before -[hidden]right-> After
+
+package "5 Key Benefits" as Benefits #F4F6F7 {
+    rectangle "1. Transparent internal\nchanges to client" as B1 #F9E79F
+    rectangle "2. Centralized security\n(auth, rate limiting)" as B2 #F9E79F
+    rectangle "3. Performance\n(routing + caching)" as B3 #F9E79F
+    rectangle "4. Monitoring & alerting" as B4 #F9E79F
+    rectangle "5. Protocol translation" as B5 #F9E79F
+}
+
+After -down-> Benefits
+
+package "3 Anti-Patterns to Avoid" as Anti #F4F6F7 {
+    rectangle "Don't add business logic\nto the Gateway" as A1 #F5B7B1
+    rectangle "Don't leave Gateway as\na Single Point of Failure\n(deploy multiple + LB)" as A2 #F5B7B1
+    rectangle "Don't bypass the Gateway\n(keeps services decoupled\nfrom external clients)" as A3 #F5B7B1
+}
+
+Benefits -down-> Anti
+
+@enduml
