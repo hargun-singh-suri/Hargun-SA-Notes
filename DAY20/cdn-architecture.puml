@@ -1,0 +1,60 @@
+@startuml CDN_Architecture
+
+title CDN — Latency Improvement + 2 Strategies
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 13
+skinparam roundcorner 10
+skinparam shadowing false
+
+skinparam rectangle {
+    BorderColor #333333
+    FontColor #222222
+}
+skinparam package {
+    BorderColor #555555
+    FontColor #222222
+}
+
+package "Without CDN (Brazil user -> US East server)" as Without #FDFEFE {
+    rectangle "TCP Handshake: 600ms\nHTML req/res: 400ms\nAssets req: 200ms\nAssets load: 2000ms\n\nTOTAL: ~3.2 seconds" as W1 #F5B7B1
+}
+
+package "With CDN (Brazil user -> nearby edge server)" as With #FDFEFE {
+    rectangle "TCP Handshake: 150ms\nHTML req/res: 100ms\nAssets req + load: 550ms\n\nTOTAL: ~800ms" as W2 #A9DFBF
+}
+
+Without -[hidden]right-> With
+
+rectangle "CDN\n(Caches content on edge servers,\nphysically closer to users)" as CDN #AED6F1
+
+With -down-> CDN
+
+package "2 Integration Strategies" as Strategies #F4F6F7 {
+
+    rectangle "Pull Strategy\n\nCDN fetches from origin\non first request + TTL expiry" as Pull #F9E79F
+
+    rectangle "Push Strategy\n\nYou manually publish/\nrepublish content to CDN" as Push #D2B4DE
+}
+
+CDN -down-> Strategies
+
+note bottom of Pull
+  + Low maintenance
+  - First request = cache miss (slow)
+  - Same TTL for all = expiry spikes
+  - Origin still needs decent uptime
+end note
+
+note bottom of Push
+  + Less traffic to origin server
+  + Origin downtime doesn't affect users
+  - Must republish on every content change
+  - Best for rarely-changing content
+end note
+
+rectangle "Benefits: Performance + Availability + Security\n(DDoS mitigation via distributed edge network)" as Benefits #EAECEE
+
+Strategies -down-> Benefits
+
+@enduml
